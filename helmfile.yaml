@@ -3,6 +3,8 @@ repositories:
     url: https://open-telemetry.github.io/opentelemetry-helm-charts
   - name: bitnami
     url: https://charts.bitnami.com/bitnami
+  - name: jaeger
+    url: https://raw.githubusercontent.com/hansehe/jaeger-all-in-one/master/helm/charts
 
 templates:
   global: &global
@@ -14,12 +16,20 @@ templates:
     cleanupOnFail: true
 
 releases:
-  - name: otel-collector
+  - name: otel-operator
     <<: *global
     chart: otel/opentelemetry-operator
     version: 0.76.0
     values:
       - ./opentelemetry-operator/base/values.yaml
+
+  - name: jaeger-aio
+    <<: *global
+    chart: jaeger/jaeger-all-in-one
+    version: 0.1.12
+    values:
+      - ./jaeger-aio/base/values.yaml
+
   # - name: tempo
   #   <<: *global
   #   chart: bitnami/grafana-tempo
