@@ -1,0 +1,32 @@
+repositories:
+  - name: otel
+    url: https://open-telemetry.github.io/opentelemetry-helm-charts
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+
+templates:
+  global: &global
+    namespace: otel
+    installed: true
+    wait: true
+    createNamespace: true
+    missingFileHandler: Error
+    cleanupOnFail: true
+
+releases:
+  - name: otel-collector
+    <<: *global
+    chart: otel/opentelemetry-operator
+    version: 0.76.0
+    values:
+      - ./opentelemetry-operator/base/values.yaml
+  # - name: tempo
+  #   <<: *global
+  #   chart: bitnami/grafana-tempo
+  #   values:
+  #     - grafana-tempo/base/values.yaml
+
+helmDefaults:
+  historyMax: 3
+  reuseValues: false
+  kubeContext: otel-scratch

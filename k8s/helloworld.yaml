@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: helloworld
+  name: helloworld
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helloworld
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: helloworld
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "true"
+    spec:
+      containers:
+        - image: ghcr.io/sinux-l5d/docker-hello-world-spring-boot/helloworld:latest
+          name: helloworld
+          ports:
+            - containerPort: 8080
+          resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: helloworld
+  name: helloworld
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: helloworld
+status:
+  loadBalancer: {}
