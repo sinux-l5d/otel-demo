@@ -1,8 +1,13 @@
 cluster := "otel-demo"
 
+all: delete-cluster create-cluster deploy
+
+alias cc := create-cluster
+alias dc := delete-cluster
+
 # Create the kind cluster
 create-cluster:
-    kind create cluster --config kind.yaml --name "{{ cluster }}" --wait 1m
+    kind create cluster --config {{ justfile_directory() }}/kind.yaml --name "{{ cluster }}" --wait 1m
 
 # Delete the kind cluster
 delete-cluster:
@@ -10,7 +15,7 @@ delete-cluster:
 
 # Apply objects from ./k8s
 apply:
-    kubectl apply -f ./k8s
+    kubectl apply -f {{ justfile_directory() }}/k8s
 
 # Sync helmfile with cluster
 helm:
@@ -19,4 +24,3 @@ helm:
 # Apply ./k8s and sync helmfile
 deploy: helm apply
 
-all: delete-cluster create-cluster deploy
