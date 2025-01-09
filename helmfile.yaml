@@ -1,8 +1,6 @@
 repositories:
   - name: otel
     url: https://open-telemetry.github.io/opentelemetry-helm-charts
-  - name: bitnami
-    url: https://charts.bitnami.com/bitnami
   - name: jaeger
     url: https://raw.githubusercontent.com/hansehe/jaeger-all-in-one/master/helm/charts
 

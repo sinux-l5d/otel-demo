@@ -28,7 +28,7 @@ spec:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [debug]
+          exporters: [otlp/jaeger]
         metrics:
           receivers: [otlp]
           processors: []

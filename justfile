@@ -1,4 +1,5 @@
 cluster := "otel-demo"
+debug := "false"
 
 [confirm("Recreate cluster and deploy everything?")]
 all: delete-cluster create-cluster (load justfile_dir() / "ref-qrcode-generator.tar") deploy
@@ -24,7 +25,7 @@ apply:
 
 # Sync helmfile with cluster
 helm:
-    helmfile sync --kube-context kind-{{ cluster }}
+    helmfile sync --kube-context kind-{{ cluster }} {{ if debug == "true" { "--debug" } else { "" } }}
 
 # Apply ./k8s and sync helmfile
 deploy: helm apply

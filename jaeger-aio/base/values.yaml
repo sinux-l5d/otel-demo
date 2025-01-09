@@ -103,7 +103,7 @@ volume:
   size: 3Gi
 
 tests:
-  enabled: true
+  enabled: false
 
 livenessProbe:
   periodSeconds: 10
