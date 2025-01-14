@@ -2,7 +2,7 @@ cluster := "otel-demo"
 debug := "false"
 
 [confirm("Recreate cluster and deploy everything?")]
-all: delete-cluster create-cluster (load justfile_dir() / "ref-qrcode-generator.tar") deploy
+all: delete-cluster create-cluster deploy
 
 alias cc := create-cluster
 alias dc := delete-cluster
