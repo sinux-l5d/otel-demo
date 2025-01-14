@@ -20,8 +20,8 @@ load IMAGE:
     kind load image-archive --name "{{ cluster }}" "{{ IMAGE }}"
 
 # Apply objects from ./k8s
-apply:
-    kubectl apply -f {{ justfile_dir() }}/k8s
+apply filename="":
+    kubectl apply -f {{ justfile_dir() }}/k8s/{{ filename }}
 
 # Sync helmfile with cluster
 helm:

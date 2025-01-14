@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: helloworld
   name: helloworld
@@ -13,11 +12,10 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: helloworld
       annotations:
-        instrumentation.opentelemetry.io/inject-java: "true"
+        instrumentation.opentelemetry.io/inject-java: "otel/global"
     spec:
       containers:
         - image: ghcr.io/sinux-l5d/docker-hello-world-spring-boot/helloworld:latest
@@ -30,7 +28,6 @@ status: {}
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
   labels:
     app: helloworld
   name: helloworld

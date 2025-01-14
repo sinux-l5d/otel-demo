@@ -1,7 +1,9 @@
 repositories:
   - name: otel
+    skipTLSVerify: true
     url: https://open-telemetry.github.io/opentelemetry-helm-charts
   - name: jaeger
+    skipTLSVerify: true
     url: https://raw.githubusercontent.com/hansehe/jaeger-all-in-one/master/helm/charts
 
 templates:
@@ -14,12 +16,6 @@ templates:
     cleanupOnFail: true
 
 releases:
-  - name: otel-operator
-    <<: *global
-    chart: otel/opentelemetry-operator
-    version: 0.76.0
-    values:
-      - ./opentelemetry-operator/base/values.yaml
 
   - name: jaeger-aio
     <<: *global
@@ -27,6 +23,13 @@ releases:
     version: 0.1.12
     values:
       - ./jaeger-aio/base/values.yaml
+
+  - name: otel-kube-stack
+    <<: *global
+    chart: ./opentelemetry-kube-stack-0.3.9.tgz
+    version: 0.3.9
+    values:
+      - ./opentelemetry-kube-stack/base/values.yaml
 
   # - name: tempo
   #   <<: *global
@@ -37,4 +40,4 @@ releases:
 helmDefaults:
   historyMax: 3
   reuseValues: false
-  kubeContext: otel-scratch
+  kubeContext: otel-demo
