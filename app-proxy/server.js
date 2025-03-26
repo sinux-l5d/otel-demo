@@ -15,6 +15,8 @@ const server = http.createServer((req, res) => {
 
   protocol.get(targetUrl, (response) => {
     if (response.statusCode < 200 || response.statusCode >= 300) {
+      // Log code and body in one line
+      console.error(`message="Failed to fetch the URL" status=${response.statusCode}`);
       res.writeHead(418, { 'Content-Type': 'text/plain' });
       res.end("418 I'm a teapot");
       return;
@@ -32,11 +34,13 @@ const server = http.createServer((req, res) => {
   }).on('error', (err) => {
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end('Failed to fetch the URL');
+    console.error(`message="Failed to fetch the URL" error="${err.message}"`);
   });
 });
 
 server.listen(8080, () => {
   console.log('Server is listening on port 8080');
+  console.log(`Proxying requests to ${targetUrl}`);
 });
 
 // Graceful shutdown
