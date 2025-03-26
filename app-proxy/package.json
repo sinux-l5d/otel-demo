@@ -1,0 +1,12 @@
+{
+  "name": "app-proxy",
+  "version": "1.0.0",
+  "description": "A simple HTTP server that proxies requests to a given URL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "type": "module",
+  "license": "MIT"
+}

@@ -1,0 +1,59 @@
+import http from 'http';
+import https from 'https';
+import { parse } from 'url';
+
+const targetUrl = process.argv[2];
+
+if (!targetUrl) {
+  console.error('Usage: node server.js <full_url>');
+  process.exit(1);
+}
+
+const server = http.createServer((req, res) => {
+  const parsedUrl = parse(targetUrl);
+  const protocol = parsedUrl.protocol === 'https:' ? https : http;
+
+  protocol.get(targetUrl, (response) => {
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      res.writeHead(418, { 'Content-Type': 'text/plain' });
+      res.end("418 I'm a teapot");
+      return;
+    }
+
+    let data = '';
+    response.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    response.on('end', () => {
+      res.writeHead(response.statusCode, { 'Content-Type': 'text/plain' });
+      res.end(data);
+    });
+  }).on('error', (err) => {
+    res.writeHead(500, { 'Content-Type': 'text/plain' });
+    res.end('Failed to fetch the URL');
+  });
+});
+
+server.listen(8080, () => {
+  console.log('Server is listening on port 8080');
+});
+
+// Graceful shutdown
+const shutdown = () => {
+  console.log('Received shutdown signal, shutting down gracefully...');
+  server.close(() => {
+    console.log('Closed out remaining connections.');
+    process.exit(0);
+  });
+
+  // Force shutdown after 10 seconds
+  setTimeout(() => {
+    console.error('Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 10000);
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+
