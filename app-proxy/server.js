@@ -4,12 +4,13 @@ import { parse } from 'url';
 
 const targetUrl = process.argv[2];
 
-if (!targetUrl) {
-  console.error('Usage: node server.js <full_url>');
-  process.exit(1);
-}
-
 const server = http.createServer((req, res) => {
+  if (!targetUrl) {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Hello, world!');
+    return;
+  }
+
   const parsedUrl = parse(targetUrl);
   const protocol = parsedUrl.protocol === 'https:' ? https : http;
 
