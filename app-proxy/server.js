@@ -5,6 +5,9 @@ import { parse } from 'url';
 const targetUrl = process.argv[2];
 
 const server = http.createServer((req, res) => {
+  // Log incoming request details
+  console.log(`Incoming Request: method=${req.method}, path=${req.url}, headers=${JSON.stringify(req.headers)}`);
+
   if (!targetUrl) {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Hello, world!');
@@ -15,6 +18,9 @@ const server = http.createServer((req, res) => {
   const protocol = parsedUrl.protocol === 'https:' ? https : http;
 
   protocol.get(targetUrl, (response) => {
+    // Log outgoing request details
+    console.log(`Outgoing Request: method=GET, path=${parsedUrl.path}, headers=${JSON.stringify(response.headers)}`);
+
     if (response.statusCode < 200 || response.statusCode >= 300) {
       // Log code and body in one line
       console.error(`message="Failed to fetch the URL" status=${response.statusCode}`);
